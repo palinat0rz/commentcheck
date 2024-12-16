@@ -2,10 +2,6 @@ name: PR Commenter and Merge Allowance
 
 on:
   pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
 
 jobs:
   comment_on_pr:
@@ -14,31 +10,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Comment on Pull Request
-        uses: peter-evans/pull-request-comment@v4
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v4
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: 1
           body: |
-            This is an automated comment added by the GitHub Action.
-            PRs are allowed to merge and commit to the `main` branch without checks.
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
 
-  allow_merge_from_fork:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Git configuration
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-      - name: Allow Merge from Forks
-        run: |
-          # Assuming you want to remove any restrictions like branch protection rules
-          # Uncomment below if needed to disable protection rules (requires admin permissions).
-          # curl -X PATCH -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          #  -d '{"required_status_checks": null, "restrictions": null}' \
-          #  "https://api.github.com/repos/${{ github.repository }}/branches/main/protection"
-
+            [1]: https://github.com/peter-evans/create-or-update-comment
+          reactions: '+1'
