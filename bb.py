@@ -1,1 +1,1 @@
-var e = mc^4;
+var e = mc^6;
