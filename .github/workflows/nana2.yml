@@ -10,15 +10,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          issue-number: 1
-          body: |
-            This is a multi-line test comment
-            - With GitHub **Markdown** :sparkles:
-            - Created by [create-or-update-comment][1]
+      - name: Create review comment on PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          # Set variables
+          COMMENT_BODY="This is an automated review comment from the GitHub Action."
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          REPO="${{ github.repository }}"
+          
+          # Make API request to create a review comment
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/comments \
+            -d @- <<EOF
+          {
+            "body": "${COMMENT_BODY}",
+            "commit_id": "${{ github.event.pull_request.head.sha }}",
+            "path": "path/to/file.ext", 
+            "position": 1
+          }
+          EOF
 
-            [1]: https://github.com/peter-evans/create-or-update-comment
-          reactions: '+1'
-          token: ${{ secrets.PAT_TOKEN }}  # Use the PAT stored in secrets
+      
