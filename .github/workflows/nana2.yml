@@ -15,7 +15,7 @@ jobs:
 
       - name: Create review comment on PR
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Set variables
           COMMENT_BODY="This is an automated review comment from the GitHub Action."
