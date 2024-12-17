@@ -26,7 +26,7 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $PAT_TOKEN" \
-            https://api.github.com/repos/palinat0rz/$REPO/pulls/$PR_NUMBER/comments \
+            https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/comments \
             -d @- <<EOF
           {
             "body": "${COMMENT_BODY}",
