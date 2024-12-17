@@ -12,7 +12,7 @@ jobs:
 
       - name: Create review comment on PR
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           # Set variables
           COMMENT_BODY="This is an automated review comment from the GitHub Action."
@@ -22,7 +22,7 @@ jobs:
           # Make API request to create a review comment
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Authorization: Bearer $PAT_TOKEN" \
             https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/comments \
             -d @- <<EOF
           {
